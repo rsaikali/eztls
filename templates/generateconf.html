@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block container %}
+  <div class="starter-template">
+
+  <form action='/yourconfig/' method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+  </form>
+
+  </div>
+{% endblock %}
