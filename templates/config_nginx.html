@@ -22,6 +22,7 @@ server {
     ssl_prefer_server_ciphers on;
     ssl_protocols {% if ie6 %}<span class="orange">SSLv3 </span>{% endif %}{% if win_xp or ie6 %}TLSv1 {% endif %}TLSv1.1 TLSv1.2;
     ssl_ciphers 'EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA256 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EDH+aRSA EECDH {% if win_xp or ie6%}<span class="orange">RC4 </span>{% endif %}!aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS';
+    
     {% if force_https %}<span class="comment"># Enable HSTS : <a href=http://tools.ietf.org/html/rfc6797>RFC6797</a> , http://www.bortzmeyer.org/6797.html</span>
     add_header Strict-Transport-Security "max-age=315360000; includeSubdomains";{% endif %}
     server_name www.{{fqdn}} {{fqdn}};

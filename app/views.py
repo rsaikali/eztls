@@ -9,12 +9,6 @@ def index(request):
 
     return render(request, 'home.html')
 
-def config_input(request):
-    """ EZTLS Input form """
-
-    form = ConfigInput()
-    return render(request, 'config_input.html', {'form': form })
-
 def config_result(request):
     """ EZTLS Generated configuration """
 
@@ -29,5 +23,8 @@ def config_result(request):
             webserver = form.cleaned_data['webservers_choices']
         else:
             form = ConfigInput()
+        return render(request, "config_base.html", {'fqdn': fqdn, 'ie6': ie6, 'win_xp': win_xp, 'force_https': force_https, 'webserver': webserver })
+    else:
+        form = ConfigInput()
+        return render(request, 'config_input.html', {'form': form })
 
-    return render(request, "config_base.html", {'fqdn': fqdn, 'ie6': ie6, 'win_xp': win_xp, 'force_https': force_https, 'webserver': webserver })

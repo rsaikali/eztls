@@ -9,7 +9,6 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^config', 'app.views.config_input'),
-    url(r'^yourconfig', 'app.views.config_result'),
-    url(r'^/?$', 'app.views.index'),
+    url(r'^config/', 'app.views.config_result', name="config"),
+    url(r'^/?$', 'app.views.index', name="home"),
 )

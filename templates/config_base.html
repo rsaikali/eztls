@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block container %}
+
+<div class="starter-template">
+
+    <br/>
+    {% spaceless %}
+    {% if win_xp%}
+    <div class="row">
+        <div class="small-12 columns">
+            <div data-alert class="alert-box warning round">
+                Supporting Internet Explorer on Windows XP imply to enable RC4 cipher that is discouraged for some reasons. This version of IE doesn't provides Perfect Forward Secrecy.
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if ie6 %}
+    <div class="row">
+        <div class="small-12 columns">
+            <div data-alert class="alert-box warning round">
+                Supporting Internet explorer 6 imply to enable SSLv3 and RC4 cipher that are both discouraged nowadays
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <h3>Your configuration :</h3>
+
+    <div class="panel">
+        <a class="right tiny success button download">Download</a>
+        <code >
+            <pre>
+{% ifequal webserver "nginx" %}{% include "config_nginx.html" %}{% endifequal %}
+{% ifequal webserver "apache" %}{% include "config_apache.html" %}{% endifequal %}
+        </pre>
+        </code>
+    </div>
+    {% endspaceless %}
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+    $(".download").click(function() {
+        var vhost = $("pre").html().replace(/(<([^>]+)>)/ig, "").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+        var link = document.createElement('a');
+        link.download = "{{ fqdn }}.conf";
+        link.href = "data:application/octet-stream;charset=utf-8," + encodeURIComponent(vhost);
+        link.click();
+        return false;
+    });
+
+</script>
+{% endblock %}

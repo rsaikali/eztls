@@ -4,7 +4,7 @@
 <h2>Webserver Configuration</h2>
 <div class="panel">
 
-    <form role="form" action='/yourconfig/' method="post">
+    <form role="form" action='{% url 'config' %}' method="post">
 
         {% csrf_token %}
 
