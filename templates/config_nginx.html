@@ -1,67 +1,37 @@
-{% extends 'base.html' %}
+{% spaceless %}{% if force_https %}server {
+    listen 80;
 
-{% block container %}
+    server_name    www.{{fqdn}} {{fqdn}};
+    rewrite        ^ https://www.{{fqdn}}$request_uri? permanent;
+}
+{% endif %}
+{% endspaceless %}
 
-  <div class="starter-template">
+server {
+    listen 443;
+    ssl on;
 
-    <br/>
-    {% spaceless %}
-    {% if ie6 or win_xp%}
-    <div class="panel">
-        <ul>
-            {% if win_xp%}<li>Supporting Internet Explorer on Windows XP imply to enable RC4 cipher that is discouraged for some reasons. This version of IE doesn't provides Perfect Forward Secrecy.</li>{% endif %}
-            {% if ie6 %}<li>Supporting Internet explorer 6 imply to enable SSLv3 and RC4 cipher that are both discouraged nowadays</li>{% endif %}
-        </ul>
-    </div>
-    {% endif %}
-    {% endspaceless %}
+    <span class="comment"># Certificate configuration ( key size >= 2048 bits )</span>
+    ssl_certificate /etc/ssl/certs/{{fqdn}}.crt;
+    ssl_certificate_key /etc/ssl/private/{{fqdn}}.key;
 
-    <h3>Your configuration :</h3>
-    <br/>
-    <!--pre class=.nginx-->
-    <pre lang="python">
-    {% spaceless %}
-    {% if force_https %}
-    server {          
-    	listen 80;
-    
-       	server_name    www.{{fqdn}} {{fqdn}};
-       	rewrite        ^ https://www.{{fqdn}}$request_uri? permanent;
-     }
-    {% endif %}
-    {% endspaceless %}
-    
-    server {
-        listen 443;
-        ssl on;
+    <span class="comment"># Reduce TLS overhead</span>
+    ssl_session_cache  builtin:1000  shared:SSL:10m;
+    ssl_session_timeout 5m;
 
-        <span class="comment"># Certificate configuration ( key size >= 2048 bits )</span>
-        ssl_certificate /etc/ssl/certs/{{fqdn}}.crt;
-        ssl_certificate_key /etc/ssl/private/{{fqdn}}.key;
-    
-        <span class="comment"># Reduce TLS overhead</span>
-        ssl_session_cache  builtin:1000  shared:SSL:10m; 
-        ssl_session_timeout 5m;
-    
-        ssl_prefer_server_ciphers on;
-        ssl_protocols {% if ie6 %}<span class="orange">SSLv3 </span>{% endif %}{% if win_xp or ie6 %}TLSv1 {% endif %}TLSv1.1 TLSv1.2;
-        ssl_ciphers 'EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA256 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EDH+aRSA EECDH {% if win_xp or ie6%}<span class="orange">RC4 </span>{% endif %}!aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS';
-    
-        {% if force_https %}<span class="comment"># Enable HSTS : <a href=http://tools.ietf.org/html/rfc6797>RFC6797</a> , http://www.bortzmeyer.org/6797.html</span>
-        add_header Strict-Transport-Security "max-age=315360000; includeSubdomains";{% endif %}
-    
-        server_name www.{{fqdn}} {{fqdn}};
-    
-        <span class="comment"># Avoid duplicate content</span>
-        if ($host = '{{fqdn}}' ) {
-            rewrite  ^ https://www.{{fqdn}}$request_uri? permanent;
-        }
-    
-        access_log  /var/log/nginx/{{fqdn}}_access.log;
-        error_log  /var/log/nginx/{{fqdn}}_error.log;
-        root   /var/www/{{fqdn}}/html;
+    ssl_prefer_server_ciphers on;
+    ssl_protocols {% if ie6 %}<span class="orange">SSLv3 </span>{% endif %}{% if win_xp or ie6 %}TLSv1 {% endif %}TLSv1.1 TLSv1.2;
+    ssl_ciphers 'EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA256 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EDH+aRSA EECDH {% if win_xp or ie6%}<span class="orange">RC4 </span>{% endif %}!aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS';
+    {% if force_https %}<span class="comment"># Enable HSTS : <a href=http://tools.ietf.org/html/rfc6797>RFC6797</a> , http://www.bortzmeyer.org/6797.html</span>
+    add_header Strict-Transport-Security "max-age=315360000; includeSubdomains";{% endif %}
+    server_name www.{{fqdn}} {{fqdn}};
+
+    <span class="comment"># Avoid duplicate content</span>
+    if ($host = '{{fqdn}}' ) {
+        rewrite  ^ https://www.{{fqdn}}$request_uri? permanent;
     }
-    </pre>
-</div>
 
-{% endblock %}
+    access_log  /var/log/nginx/{{fqdn}}_access.log;
+    error_log  /var/log/nginx/{{fqdn}}_error.log;
+    root   /var/www/{{fqdn}}/html;
+}

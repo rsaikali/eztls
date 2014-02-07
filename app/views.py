@@ -30,12 +30,4 @@ def config_result(request):
         else:
             form = ConfigInput()
 
-    server_template = 'nginx.html' # default webserver
-
-    webserver = 'nginx'
-    if webserver == 'nginx':
-        server_template = 'config_nginx.html'
-    elif webserver == 'apache':
-        server_template = 'config_apache.html'
-
-    return render(request, server_template, { 'fqdn':fqdn, 'ie6': ie6, 'win_xp': win_xp, 'force_https': force_https, 'webserver': webserver })
+    return render(request, "config_base.html", {'fqdn': fqdn, 'ie6': ie6, 'win_xp': win_xp, 'force_https': force_https, 'webserver': webserver })

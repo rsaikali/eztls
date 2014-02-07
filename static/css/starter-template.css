@@ -1,28 +1,37 @@
-body {
-  padding-top: 50px;
+
+pre {
+    overflow: auto;
+    width: auto;
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
-.starter-template {
-  padding: 40px 15px;
-  text-align: left;
+
+pre, code {
+    white-space: pre-wrap; /* css-3 */
+    white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
 }
 
 .comment {
-  color: grey;
-  font-style: italic;
+    color: grey;
+    font-style: italic;
 }
 
 .green {
-  color: green;
+    color: green;
 }
 
 .orange {
-  color: orange;
+    color: orange;
 }
 
 .red {
-  color: red;
+    color: red;
 }
 
 .grey {
-  color: grey;
+    color: grey;
 }

@@ -1,16 +1,70 @@
 {% extends 'base.html' %}
 
 {% block container %}
-  <h2>Webserver Configuration</h2>
-  <div class="starter-template">
+<h2>Webserver Configuration</h2>
+<div class="panel">
 
-  <form role="form" action='/yourconfig/' method="post">
-  <div class="form-group">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" />
-  </div>
-  </form>
+    <form role="form" action='/yourconfig/' method="post">
 
-  </div>
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="small-2 columns">
+                <label for="id_fqdn" class="right inline">Domain name:</label>
+            </div>
+            <div class="small-10 columns">
+                <input id="id_fqdn" maxlength="50" name="fqdn" type="text" placeholder="Enter your FQDN..."/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="small-2 columns">
+                <label for="id_ie6" class="right">Support IE6:</label>
+            </div>
+            <div class="small-10 columns">
+                <input id="id_ie6" name="ie6" type="checkbox" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="small-2 columns">
+                <label for="id_win_xp" class="right">Support WinXP:</label>
+            </div>
+            <div class="small-10 columns">
+                <input id="id_win_xp" name="win_xp" type="checkbox" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="small-2 columns">
+                <label for="id_force_https" class="right">Force https:</label>
+            </div>
+            <div class="small-10 columns">
+                <input id="id_force_https" name="force_https" type="checkbox" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="small-2 columns">
+                <label for="id_webservers_choices" class="right inline">Webserver:</label>
+            </div>
+            <div class="small-10 columns">
+                <select id="id_webservers_choices" name="webservers_choices">
+                    <option value="nginx">Nginx</option>
+                    <option value="apache">Apache</option>
+                </select>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="small-12 columns">
+                <input class="right success tiny button" type="submit" value="Submit" />
+            </div>
+        </div>
+
+    </form>
+
+</div>
 {% endblock %}
