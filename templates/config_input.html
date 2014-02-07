@@ -13,8 +13,19 @@
                 <label for="id_fqdn" class="right inline">Domain name:</label>
             </div>
             <div class="small-10 columns">
-                <input id="id_fqdn" maxlength="50" name="fqdn" type="text" placeholder="Enter your FQDN..."/>
+                <input id="id_fqdn" name="fqdn" type="text" placeholder="Enter your FQDN..."/>
             </div>
+            {% if form.fqdn.errors %}
+            {% for error in form.fqdn.errors %}
+            <div class="row">
+                <div class="small-10 columns right">
+                    <div data-alert class="alert-box warning round">
+                        <strong>{{ form.fqdn.label }} : {{ error|escape }}</strong>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
         </div>
 
         <div class="row">
